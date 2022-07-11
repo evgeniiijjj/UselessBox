@@ -15,7 +15,7 @@ public class Toy implements Runnable {
         while (true) {
             if (toggle.get()) {
                 try {
-                    Thread.sleep(pause);
+                    Thread.sleep(pause);// эта пауза чтобы игрушка не сразу выключала тумблер после его включения юзером
                 } catch (InterruptedException ignored) {
                 }
                 toggle.set(false);
