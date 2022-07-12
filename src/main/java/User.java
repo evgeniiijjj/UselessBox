@@ -1,14 +1,12 @@
-import java.util.concurrent.atomic.AtomicBoolean;
-
 public class User implements Runnable {
 
-    private final AtomicBoolean toggle;
-    private final int cyclesNum;
+    private final Toy toy;
+    private final int toggleSwitchesNumber;
     private final int pause;
 
-    public User(AtomicBoolean toggle, int cyclesNum, int pause) {
-        this.toggle = toggle;
-        this.cyclesNum = cyclesNum;
+    public User(Toy toy, int toggleSwitchesNumber, int pause) {
+        this.toy = toy;
+        this.toggleSwitchesNumber = toggleSwitchesNumber;
         this.pause = pause;
     }
 
@@ -16,13 +14,13 @@ public class User implements Runnable {
     public void run() {
         String name = Thread.currentThread().getName();
         int i = 0;
-        while (i < cyclesNum) {
-            if (!toggle.get()) {
+        while (i < toggleSwitchesNumber) {
+            if (toy.isToggleOff()) {
                 try {
-                    Thread.sleep(pause);
+                    Thread.sleep(pause); // пауза перед включением тумблера игрушки
                 } catch (InterruptedException ignored) {
                 }
-                toggle.set(true);
+                toy.toggleOn();
                 System.out.printf("Пользователь %s включил тумблер\n", name);
                 i++;
             }

@@ -1,25 +1,24 @@
-import java.util.concurrent.atomic.AtomicBoolean;
-
 public class UselessBox {
-    static final AtomicBoolean toggle = new AtomicBoolean(false); // атомик вполне подходит здесь, кроме того переменная ссылочная удобно передавать юзеру и игрушке, переменная статик, потому что я не создаю объект главного класса, переменная не приватная ну и что? приватность здесь ни к чему
-    static final int cyclesNum = 5; // переменная статик, потому что я не создаю объект главного класса, переменная не приватная ну и что? приватность здесь ни к чему
-    static final int pause = 1000; // переменная статик, потому что я не создаю объект главного класса, переменная не приватная ну и что? приватность здесь ни к чему
+    private static final int toggleSwitchesNumber = 5; // переменная статик, поскольку объект главного класса не создается
+    private static final int pause = 1000; // переменная статик, поскольку объект главного класса не создается
 
     public static void main(String[] args) throws InterruptedException {
 
-        Thread user = new Thread(new User(toggle, cyclesNum, pause));
+        Toy toy = new Toy(pause);
+
+        Thread user = new Thread(new User(toy, toggleSwitchesNumber, pause));
 
         user.start();
 
-        Thread toy = new Thread(new Toy(toggle, pause));
+        Thread toyThread = new Thread(new Toy(pause));
 
-        toy.setDaemon(true);
+        toyThread.setDaemon(true);
 
-        toy.start();
+        toyThread.start();
 
         user.join();
 
-        Thread.sleep(pause); // смысл этой паузы, чтобы игрушка успевала выключить тумблер, после завершения потока пользователя.
+        Thread.sleep(pause); // смысл этой паузы, чтобы игрушка успевала выключить тумблер, после завершения потока пользователя и до завершения главного потока.
 
         System.out.println("Игра завершилась");
     }

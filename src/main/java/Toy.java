@@ -1,26 +1,32 @@
-import java.util.concurrent.atomic.AtomicBoolean;
-
 public class Toy implements Runnable {
-    private final AtomicBoolean toggle;
+    private volatile boolean toggle;
     private final int pause;
 
-    public Toy(AtomicBoolean toggle, int pause) {
-        this.toggle = toggle;
+    public Toy(int pause) {
         this.pause = pause;
+        toggle = false;
     }
 
     @Override
     public void run() {
         Thread thread = Thread.currentThread();
         while (true) {
-            if (toggle.get()) {
+            if (toggle) {
                 try {
-                    Thread.sleep(pause);// эта пауза чтобы игрушка не сразу выключала тумблер после его включения юзером
+                    Thread.sleep(pause);// пауза перед выключением тумблера игрушки
                 } catch (InterruptedException ignored) {
                 }
-                toggle.set(false);
+                toggle = false;
                 System.out.printf("Игрушка %s выключил тумблер\n", thread.getName());
             }
         }
+    }
+
+    public boolean isToggleOff() {
+        return !toggle;
+    }
+
+    public synchronized void toggleOn() {
+        toggle = true;
     }
 }
