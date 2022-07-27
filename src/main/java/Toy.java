@@ -1,9 +1,7 @@
 public class Toy implements Runnable {
     private volatile boolean toggle;
-    private final int pause;
 
-    public Toy(int pause) {
-        this.pause = pause;
+    public Toy() {
         toggle = false;
     }
 
@@ -13,7 +11,7 @@ public class Toy implements Runnable {
         while (true) {
             if (toggle) {
                 try {
-                    Thread.sleep(pause);// пауза перед выключением тумблера игрушки
+                    Thread.sleep(UselessBox.PAUSE);// пауза перед выключением тумблера игрушки
                 } catch (InterruptedException ignored) {
                 }
                 toggle = false;
@@ -26,7 +24,7 @@ public class Toy implements Runnable {
         return !toggle;
     }
 
-    public synchronized void toggleOn() {
+    public void toggleOn() {
         toggle = true;
     }
 }

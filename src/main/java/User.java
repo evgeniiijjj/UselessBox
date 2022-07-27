@@ -1,23 +1,19 @@
 public class User implements Runnable {
 
     private final Toy toy;
-    private final int toggleSwitchesNumber;
-    private final int pause;
 
-    public User(Toy toy, int toggleSwitchesNumber, int pause) {
+    public User(Toy toy) {
         this.toy = toy;
-        this.toggleSwitchesNumber = toggleSwitchesNumber;
-        this.pause = pause;
     }
 
     @Override
     public void run() {
         String name = Thread.currentThread().getName();
         int i = 0;
-        while (i < toggleSwitchesNumber) {
+        while (i < UselessBox.CLICKS) {
             if (toy.isToggleOff()) {
                 try {
-                    Thread.sleep(pause); // пауза перед включением тумблера игрушки
+                    Thread.sleep(UselessBox.PAUSE); // пауза перед включением тумблера игрушки
                 } catch (InterruptedException ignored) {
                 }
                 toy.toggleOn();
